@@ -17,17 +17,14 @@ namespace BlazingPizza
             // To simulate a real backend process, we fake status updates based on the amount
             // of time since the order was placed
             string statusText;
-            List<Marker> mapMarkers;
+            List<Marker> mapMarkers = new List<Marker>();
             var dispatchTime = order.CreatedTime.AddSeconds(10);
             var deliveryDuration = TimeSpan.FromMinutes(1); // Unrealistic, but more interesting to watch
 
             if (DateTime.Now < dispatchTime)
             {
                 statusText = "Preparing";
-                mapMarkers = new List<Marker>
-                {
-                    ToMapMarker("You", order.DeliveryLocation, showPopup: true)
-                };
+                mapMarkers.Add(ToMapMarker("You", order.DeliveryLocation, showPopup: true));
             }
             else if (DateTime.Now < dispatchTime + deliveryDuration)
             {
@@ -36,19 +33,16 @@ namespace BlazingPizza
                 var startPosition = ComputeStartPosition(order);
                 var proportionOfDeliveryCompleted = Math.Min(1, (DateTime.Now - dispatchTime).TotalMilliseconds / deliveryDuration.TotalMilliseconds);
                 var driverPosition = LatLong.Interpolate(startPosition, order.DeliveryLocation, proportionOfDeliveryCompleted);
-                mapMarkers = new List<Marker>
+                mapMarkers.AddRange(new List<Marker>
                 {
                     ToMapMarker("You", order.DeliveryLocation),
                     ToMapMarker("Driver", driverPosition, showPopup: true),
-                };
+                });
             }
             else
             {
                 statusText = "Delivered";
-                mapMarkers = new List<Marker>
-                {
-                    ToMapMarker("Delivery location", order.DeliveryLocation, showPopup: true),
-                };
+                mapMarkers.Add(ToMapMarker("Delivery location", order.DeliveryLocation, showPopup: true));
             }
 
             return new OrderWithStatus
@@ -66,10 +60,21 @@ namespace BlazingPizza
             var distance = 0.01 + rng.NextDouble() * 0.02;
             var angle = rng.NextDouble() * Math.PI * 2;
             var offset = (distance * Math.Cos(angle), distance * Math.Sin(angle));
-            return new LatLong(order.DeliveryLocation.Latitude + offset.Item1, order.DeliveryLocation.Longitude + offset.Item2);
+            var latLong = new LatLong(order.DeliveryLocation.Latitude + offset.Item1, order.DeliveryLocation.Longitude + offset.Item2);
+            return latLong;
         }
 
-        static Marker ToMapMarker(string description, LatLong coords, bool showPopup = false)
-            => new Marker { Description = description, X = coords.Longitude, Y = coords.Latitude, ShowPopup = showPopup };
+        private static Marker ToMapMarker(string description, LatLong coords, bool showPopup = false)
+        {
+            coords = new LatLong();
+            var marker = new Marker
+            {
+                Description = description,
+                X = coords.Longitude,
+                Y = coords.Latitude,
+                ShowPopup = showPopup
+            };
+            return marker;
+        }
     }
 }
