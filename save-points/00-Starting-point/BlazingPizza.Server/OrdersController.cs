@@ -47,7 +47,9 @@ namespace BlazingPizza.Server
                 return NotFound();
             }
 
-            return OrderWithStatus.FromOrder(order);
+            var orderWithStatus = OrderWithStatus.FromOrder(order);
+
+            return orderWithStatus;
         }
 
         [HttpPost]

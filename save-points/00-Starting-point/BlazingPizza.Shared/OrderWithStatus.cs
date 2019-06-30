@@ -14,13 +14,13 @@ namespace BlazingPizza
 
         public static OrderWithStatus FromOrder(Order order)
         {
-            // To simulate a real backend process, we fake status updates based on the amount
-            // of time since the order was placed
-            string statusText;
             List<Marker> mapMarkers = new List<Marker>();
             var dispatchTime = order.CreatedTime.AddSeconds(10);
             var deliveryDuration = TimeSpan.FromMinutes(1); // Unrealistic, but more interesting to watch
 
+            // To simulate a real backend process, we fake status updates based on the amount
+            // of time since the order was placed
+            string statusText;
             if (DateTime.Now < dispatchTime)
             {
                 statusText = "Preparing";
@@ -45,12 +45,14 @@ namespace BlazingPizza
                 mapMarkers.Add(ToMapMarker("Delivery location", order.DeliveryLocation, showPopup: true));
             }
 
-            return new OrderWithStatus
+            var orderWithStatus = new OrderWithStatus()
             {
                 Order = order,
                 StatusText = statusText,
                 MapMarkers = mapMarkers,
             };
+
+            return orderWithStatus;
         }
 
         private static LatLong ComputeStartPosition(Order order)
@@ -64,7 +66,7 @@ namespace BlazingPizza
             return latLong;
         }
 
-        private static Marker ToMapMarker(string description, LatLong coords, bool showPopup = false)
+        static Marker ToMapMarker(string description, LatLong coords, bool showPopup = false)
         {
             coords = new LatLong();
             var marker = new Marker
