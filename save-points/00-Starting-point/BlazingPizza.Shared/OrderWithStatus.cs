@@ -68,7 +68,6 @@ namespace BlazingPizza
 
         static Marker ToMapMarker(string description, LatLong coords, bool showPopup = false)
         {
-            coords = new LatLong();
             var marker = new Marker
             {
                 Description = description,
