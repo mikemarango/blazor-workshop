@@ -21,12 +21,12 @@
     </ul>
 </div>
 <div class="sidebar">
-    @if (OrderState.Order.Pizzas.Any())
+    @if (Order.Pizzas.Any())
     {
         <div class="order-contents">
             <h2>Your order</h2>
 
-            @foreach (var configuredPizza in OrderState.Order.Pizzas)
+            @foreach (var configuredPizza in Order.Pizzas)
             {
                 <ConfiguredPizzaItem Pizza="configuredPizza" OnRemoved="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))" />
             }
@@ -37,10 +37,10 @@
         <div class="empty-cart">Choose a pizza<br>to get started</div>
     }
 
-    <div class="order-total @(OrderState.Order.Pizzas.Any() ? "" : "hidden")">
+    <div class="order-total @(Order.Pizzas.Any() ? "" : "hidden")">
         Total:
-        <span class="total-price">@OrderState.Order.GetFormattedTotalPrice()</span>
-        <button class="btn btn-warning" disabled="@(OrderState.Order.Pizzas.Count == 0)" @onclick="@PlaceOrder">
+        <span class="total-price">@Order.GetFormattedTotalPrice()</span>
+        <button class="btn btn-warning" disabled="@(Order.Pizzas.Count == 0)" @onclick="@PlaceOrder">
             Order >
         </button>
     </div>
@@ -48,6 +48,7 @@
 
 @code {
 List<PizzaSpecial> specials;
+Order Order => OrderState.Order;
 
 protected async override Task OnInitAsync()
 {
@@ -56,7 +57,7 @@ protected async override Task OnInitAsync()
 
 async Task PlaceOrder()
 {
-    var newOrderId = await HttpClient.PostJsonAsync<int>("orders", OrderState.Order);
+    var newOrderId = await HttpClient.PostJsonAsync<int>("orders", Order);
     OrderState.ResetOrder();
     UriHelper.NavigateTo($"myorders/{newOrderId}");
 }
