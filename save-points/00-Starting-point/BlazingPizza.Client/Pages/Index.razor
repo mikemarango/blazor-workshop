@@ -66,7 +66,9 @@
 
 @if (OrderState.ShowingConfigureDialog)
 {
-    <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza"
-                          OnCancel="OrderState.CancelConfigurePizzaDialog"
-                          OnConfirm="OrderState.ConfirmConfigurePizzaDialog" />
+    <TemplateDialog>
+        <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza"
+                              OnCancel="OrderState.CancelConfigurePizzaDialog"
+                              OnConfirm="OrderState.ConfirmConfigurePizzaDialog" />
+    </TemplateDialog>
 }
