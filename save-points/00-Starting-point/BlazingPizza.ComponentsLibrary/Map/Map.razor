@@ -11,9 +11,12 @@
 
     protected async override Task OnAfterRenderAsync()
     {
-        await JSRuntime.InvokeAsync<object>(
+        var deliveryMap = await JSRuntime.InvokeAsync<object>(
             "deliveryMap.showOrUpdate",
             elementId,
             Markers);
+
+        await Task.FromResult(deliveryMap);
+        
     }
 }
