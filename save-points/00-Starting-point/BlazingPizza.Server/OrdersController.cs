@@ -29,7 +29,7 @@ namespace BlazingPizza.Server
                 .OrderByDescending(o => o.CreatedTime)
                 .ToListAsync();
 
-            return orders.Select(o => OrderWithStatus.FromOrder(o)).ToList();
+            return orders.ConvertAll(o => OrderWithStatus.FromOrder(o));
         }
 
         [HttpGet("{orderId}")]
