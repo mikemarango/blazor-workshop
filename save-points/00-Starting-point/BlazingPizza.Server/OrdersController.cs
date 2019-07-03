@@ -57,7 +57,8 @@ namespace BlazingPizza.Server
         public async Task<ActionResult<int>> PlaceOrder(Order order)
         {
             order.CreatedTime = DateTime.Now;
-            order.DeliveryLocation = new LatLong(51.5001, -0.1239);
+            //order.DeliveryLocation = new LatLong(51.5001, -0.1239);
+            order.DeliveryLocation = new LatLong(-1.3016203, 36.90034089999995);
             order.UserId = GetUserId();
 
             _db.Orders.Attach(order);
