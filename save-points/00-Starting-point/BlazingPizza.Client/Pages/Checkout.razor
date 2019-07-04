@@ -4,7 +4,7 @@
 @inject IUriHelper UriHelper
 
 <div class="main">
-    <EditForm Model="@OrderState.Order.DeliveryAddress" OnInvalidSubmit="@PlaceOrder">
+    <EditForm Model="@OrderState.Order.DeliveryAddress" OnValidSubmit="@PlaceOrder">
         <div class="checkout-cols">
             <div class="checkout-order-details">
                 <h4>Review order</h4>
