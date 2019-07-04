@@ -6,22 +6,22 @@ namespace BlazingPizza
     {
         public int Id { get; set; }
 
-        [Required, MaxLength(100)]
+        [Required(ErrorMessage = "Name is required!"), MaxLength(100)]
         public string Name { get; set; }
 
-        [Required, MaxLength(100)]
+        [Required(ErrorMessage = "Location is required!"), MaxLength(100)]
         public string Line1 { get; set; }
 
         [MaxLength(100)]
         public string Line2 { get; set; }
 
-        [Required, MaxLength(50)]
+        [Required(ErrorMessage = "Enter your locations city!"), MaxLength(50)]
         public string City { get; set; }
 
-        [Required, MaxLength(20)]
+        [Required(ErrorMessage = "Enter region/county/borough!"), MaxLength(20)]
         public string Region { get; set; }
 
-        [Required, MaxLength(20)]
+        [Required(ErrorMessage = "Enter your postal address!"), MaxLength(20)]
         public string PostalCode { get; set; }
     }
 }
