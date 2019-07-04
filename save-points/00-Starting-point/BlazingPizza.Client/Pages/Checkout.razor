@@ -4,28 +4,49 @@
 @inject IUriHelper UriHelper
 
 <div class="main">
-    <EditForm Model="@OrderState.Order.DeliveryAddress" OnValidSubmit="@PlaceOrder">
-        <div class="checkout-cols">
-            <div class="checkout-order-details">
-                <h4>Review order</h4>
-                <OrderReview Order="@OrderState.Order" />
-            </div>
+    <AuthorizeView Context="authContext">
+        <NotAuthorized>
+            <h2>Retrieving your login info...</h2>
+        </NotAuthorized>
+        <Authorized>
+            <EditForm Model="@OrderState.Order.DeliveryAddress" OnValidSubmit="@PlaceOrder">
+                <div class="checkout-cols">
+                    <div class="checkout-order-details">
+                        <h4>Review order</h4>
+                        <OrderReview Order="@OrderState.Order" />
+                    </div>
 
-            <div class="checkout-delivery-address">
-                <h4>Deliver to...</h4>
-                <AddressEditor Address="@OrderState.Order.DeliveryAddress" />
-            </div>
-        </div>
+                    <div class="checkout-delivery-address">
+                        <h4>Deliver to...</h4>
+                        <AddressEditor Address="@OrderState.Order.DeliveryAddress" />
+                    </div>
+                </div>
 
-        <button type="submit" class="checkout-button btn btn-warning">
-            Place order
-        </button>
+                <button type="submit" class="checkout-button btn btn-warning">
+                    Place order
+                </button>
 
-        <DataAnnotationsValidator />
-    </EditForm>
+                <DataAnnotationsValidator />
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
 </div>
 
 @code {
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected override async Task OnInitAsync()
+    {
+        var authState = await AuthenticationStateTask;
+        if (!authState.User.Identity.IsAuthenticated)
+        {
+            // The server won't accept orders from unauthenticated users, so avoid
+            // an error by making them log in at this point
+            UriHelper.NavigateTo("user/signin?redirectUri=/checkout", true);
+        }
+    }
+
     async Task PlaceOrder()
     {
         var newOrderId = await HttpClient.PostJsonAsync<int>("orders", OrderState.Order);
