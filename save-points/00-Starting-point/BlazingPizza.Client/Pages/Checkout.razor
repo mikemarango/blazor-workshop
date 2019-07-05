@@ -47,6 +47,22 @@
             await LocalStorage.SetAsync(JSRuntime, "currentorder", OrderState.Order);
             UriHelper.NavigateTo("user/signin?redirectUri=/checkout", true);
         }
+
+        // Try to recover any temporary saved order
+        if (!OrderState.Order.Pizzas.Any())
+        {
+            var savedOrder = await LocalStorage.GetAsync<Order>(JSRuntime, "currentorder");
+            if (savedOrder != null)
+            {
+                OrderState.ReplaceOrder(savedOrder);
+                await LocalStorage.DeleteAsync(JSRuntime, "currentorder");
+            }
+            else
+            {
+                // There's nothing check out - go to home
+                UriHelper.NavigateTo("");
+            }
+        }
     }
 
     async Task PlaceOrder()
