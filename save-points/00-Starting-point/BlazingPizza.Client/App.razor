@@ -1,5 +1,15 @@
 ﻿<CascadingAuthenticationState>
     <Router AppAssembly="typeof(Program).Assembly">
         <NotFoundContent>Page not found</NotFoundContent>
+        <NotAuthorizedContent>
+            <div class="main">
+                <h2>Oops, seems like you are not logged in.</h2>
+                <p>Please sign in to continue.</p>
+                <a class="btn btn-danger" href="user/signin">Sign in</a>
+            </div>
+        </NotAuthorizedContent>
+        <AuthorizingContent>
+            Loading...
+        </AuthorizingContent>
     </Router>
 </CascadingAuthenticationState>
