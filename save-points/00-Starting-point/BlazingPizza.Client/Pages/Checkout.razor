@@ -2,6 +2,7 @@
 @inject HttpClient HttpClient
 @inject OrderState OrderState
 @inject IUriHelper UriHelper
+@inject IJSRuntime JSRuntime
 
 <div class="main">
     <AuthorizeView Context="authContext">
@@ -43,6 +44,7 @@
         {
             // The server won't accept orders from unauthenticated users, so avoid
             // an error by making them log in at this point
+            await LocalStorage.SetAsync(JSRuntime, "currentorder", OrderState.Order);
             UriHelper.NavigateTo("user/signin?redirectUri=/checkout", true);
         }
     }
