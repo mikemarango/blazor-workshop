@@ -12,7 +12,8 @@ namespace BlazingPizza.Client
 
             // Add auth services
             services.AddAuthorizationCore();
-            services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider, 
+                ServerAuthenticationStateProvider>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

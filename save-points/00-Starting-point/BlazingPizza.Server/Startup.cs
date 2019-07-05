@@ -50,6 +50,7 @@ namespace BlazingPizza.Server
                         return context.Response.WriteAsync("<script>window.close();</script>");
                     };
                 });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,6 +60,7 @@ namespace BlazingPizza.Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             app.UseRouting();
@@ -72,6 +74,8 @@ namespace BlazingPizza.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
             });
+
+            
         }
     }
 }
