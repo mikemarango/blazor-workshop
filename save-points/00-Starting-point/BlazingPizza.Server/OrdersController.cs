@@ -56,6 +56,7 @@ namespace BlazingPizza.Server
         {
             order.CreatedTime = DateTime.Now;
             order.DeliveryLocation = new LatLong(51.5001, -0.1239);
+            //order.DeliveryLocation = new LatLong(-1.2888, 36.8232);
             order.UserId = GetUserId();
 
             _db.Orders.Attach(order);
