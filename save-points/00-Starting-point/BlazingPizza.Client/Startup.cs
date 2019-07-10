@@ -5,10 +5,8 @@ namespace BlazingPizza.Client
 {
     public class Startup
     {
-        public void ConfigureServices(IServiceCollection services)
-        {
-
-        }
+        public void ConfigureServices(IServiceCollection services) => 
+            _ = services.AddScoped<OrderState>();
 
         public void Configure(IComponentsApplicationBuilder app)
         {
