@@ -38,6 +38,11 @@ namespace BlazingPizza.Client
             ShowingConfigureDialog = false;
         }
 
+        public void ReplaceOrder(Order order)
+        {
+            Order = order;
+        }
+
         public void ResetOrder()
         {
             Order = new Order();
