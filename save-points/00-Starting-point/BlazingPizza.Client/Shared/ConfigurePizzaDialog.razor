@@ -50,11 +50,11 @@
             </div>
         </form>
         <div class="dialog-buttons">
-            <button class="btn btn-secondary mr-auto">Cancel</button>
+            <button class="btn btn-secondary mr-auto" @onclick="@OnCancel">Cancel</button>
             <span class="mr-center">
                 Price: <span class="price">@(Pizza.GetFormattedTotalPrice())</span>
             </span>
-            <button class="btn btn-success ml-auto">Order ></button>
+            <button class="btn btn-success ml-auto" @onclick="@OnConfirm">Order ></button>
         </div>
     </div>
 </div>
@@ -62,6 +62,8 @@
 @code {
     List<Topping> toppings;
     [Parameter] Pizza Pizza { get; set; }
+    [Parameter] EventCallback OnCancel { get; set; }
+    [Parameter] EventCallback OnConfirm { get; set; }
     protected async override Task OnInitAsync()
     {
         toppings = await HttpClient.GetJsonAsync<List<Topping>>("toppings");
