@@ -3,26 +3,23 @@
 @inject OrderState OrderState
 @inject IUriHelper UriHelper
 @inject IJSRuntime JS
-<div class="dialog-container">
-    <div class="dialog">
-        <div class="main">
-            <ul class="pizza-cards">
-                @if (specials != null)
-                {
-                    @foreach (var special in specials)
-                    {
-                        <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
-                            <div class="pizza-info">
-                                <span class="title">@special.Name</span>
-                                @special.Description
-                                <span class="price">@special.GetFormattedBasePrice()</span>
-                            </div>
-                        </li>
-                    }
-                }
-            </ul>
-        </div>
-    </div>
+
+<div class="main">
+    <ul class="pizza-cards">
+        @if (specials != null)
+        {
+            @foreach (var special in specials)
+            {
+                <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(special))" style="background-image: url('@special.ImageUrl')">
+                    <div class="pizza-info">
+                        <span class="title">@special.Name</span>
+                        @special.Description
+                        <span class="price">@special.GetFormattedBasePrice()</span>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
 </div>
 
 <div class="sidebar">
@@ -51,11 +48,12 @@
     </div>
 </div>
 
-<TemplatedDialog Show="OrderState.ShowingConfigureDialog">
+@if (OrderState.ShowingConfigureDialog)
+{
     <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza"
                           OnCancel="OrderState.CancelConfigurePizzaDialog"
                           OnConfirm="OrderState.ConfirmConfigurePizzaDialog" />
-</TemplatedDialog>
+}
 
 @functions {
     List<PizzaSpecial> specials;
